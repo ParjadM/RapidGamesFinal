@@ -6,6 +6,7 @@ namespace RapidGames.Interfaces
 {
     public interface IGameService
     {
+        // base CRUD
         Task<IEnumerable<GameDto>> GetAllGamesAsync();
         Task<GameDto?> GetGameByIdAsync(int id);
         Task<GameDto> CreateGameAsync(CreateGameDto createGameDto);

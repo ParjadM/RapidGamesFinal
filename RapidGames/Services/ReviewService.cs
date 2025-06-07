@@ -20,6 +20,7 @@ namespace RapidGames.Services
 
         public async Task<IEnumerable<ReviewDto>> GetAllReviewsAsync()
         {
+            // Fetch all reviews and map them to ReviewDto, including game title
             return await _context.Reviews
                 .Include(r => r.Game) 
                 .Select(r => new ReviewDto
@@ -35,6 +36,7 @@ namespace RapidGames.Services
 
         public async Task<ReviewDto?> CreateReviewAsync(CreateReviewDto reviewDto)
         {
+            // Validate that the game exists before creating a review
             var gameExists = await _context.Games.AnyAsync(g => g.GameId == reviewDto.GameId);
             if (!gameExists)
             {

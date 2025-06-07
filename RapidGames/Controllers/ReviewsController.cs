@@ -13,14 +13,24 @@ public class ReviewsController : ControllerBase
     {
         _reviewService = reviewService;
     }
-
+    /// <summary>
+    /// return all reviews
+    /// </summary>
+    /// <returns>
+    /// 200 OK
+    /// </returns>
     [HttpGet]
     public async Task<IActionResult> GetReviews()
     {
         var reviews = await _reviewService.GetAllReviewsAsync();
         return Ok(reviews);
     }
-
+    /// <summary>
+    /// create a review
+    /// </summary>
+    /// <returns>
+    /// 200 OK
+    /// </returns>
     [HttpPost]
     public async Task<IActionResult> CreateReview([FromBody] CreateReviewDto createReviewDto)
     {

@@ -20,6 +20,7 @@ namespace RapidGames.Services
 
         public async Task<IEnumerable<GameDto>> GetAllGamesAsync()
         {
+            // Fetch all games and map them to GameDto, including categories
             return await _context.Games
                 .Include(g => g.CategoryGames).ThenInclude(cg => cg.Category)
                 .Select(gameEntity => new GameDto
@@ -38,6 +39,7 @@ namespace RapidGames.Services
 
         public async Task<GameDto?> GetGameByIdAsync(int id)
         {
+            // Fetch a single game by ID and map it to GameDto, including categories
             return await _context.Games
                 .Where(g => g.GameId == id)
                 .Include(g => g.CategoryGames).ThenInclude(cg => cg.Category)
@@ -57,6 +59,7 @@ namespace RapidGames.Services
 
         public async Task<GameDto> CreateGameAsync(CreateGameDto createGameDto)
         {
+            // Validate the input DTO
             var gameEntity = new Game
             {
                 Title = createGameDto.Title,
@@ -81,6 +84,7 @@ namespace RapidGames.Services
 
         public async Task<GameDto?> UpdateGameAsync(int id, UpdateGameDto updateGameDto)
         {
+            // Validate the input DTO and fetch the existing game entity
             var gameEntity = await _context.Games
                 .Include(g => g.CategoryGames)
                 .FirstOrDefaultAsync(g => g.GameId == id);
@@ -110,6 +114,7 @@ namespace RapidGames.Services
 
         public async Task<bool> DeleteGameAsync(int id)
         {
+            // Fetch the game entity by ID and remove it
             var gameEntity = await _context.Games.FindAsync(id);
             if (gameEntity == null)
             {

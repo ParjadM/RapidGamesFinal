@@ -20,6 +20,7 @@ namespace RapidGames.Services
 
         public async Task<IEnumerable<CategoryDto>> GetAllCategoriesAsync()
         {
+            // Fetch all categories and map them to CategoryDto
             return await _context.Categories
                 .Select(c => new CategoryDto
                 {
@@ -31,6 +32,7 @@ namespace RapidGames.Services
 
         public async Task<CategoryDto?> GetCategoryByIdAsync(int id)
         {
+            // Fetch a single category by ID and map it to CategoryDto
             return await _context.Categories
                 .Where(c => c.CategoryId == id)
                 .Select(c => new CategoryDto
@@ -43,6 +45,7 @@ namespace RapidGames.Services
 
         public async Task<CategoryDto> CreateCategoryAsync(CreateCategoryDto categoryDto)
         {
+            // Validate the input DTO
             var categoryEntity = new Category
             {
                 CategoryName = categoryDto.CategoryName
@@ -60,6 +63,7 @@ namespace RapidGames.Services
 
         public async Task<bool> DeleteCategoryAsync(int id)
         {
+            // Find the category by ID and remove it if it exists
             var categoryEntity = await _context.Categories.FindAsync(id);
             if (categoryEntity == null)
             {

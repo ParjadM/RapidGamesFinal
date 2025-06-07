@@ -12,14 +12,24 @@ public class CategoriesController : ControllerBase
     {
         _categoryService =categoryService;
     }
-
+    /// <summary>
+    /// Returns a list of Categories
+    /// </summary>
+    /// <returns>
+    /// 200 OK
+    /// </returns>
     [HttpGet]
     public async Task<IActionResult> GetCategories()
     {
         var categories = await _categoryService.GetAllCategoriesAsync();
         return Ok(categories);
     }
-
+    /// <summary>
+    /// Returns a category by its ID
+    /// </summary>
+    /// <returns>
+    /// 200 OK
+    /// </returns>
     [HttpGet("{id}")]
     public async Task<IActionResult> GetCategory(int id)
     {
@@ -30,6 +40,12 @@ public class CategoriesController : ControllerBase
         }
         return Ok(category);
     }
+    /// <summary>
+    /// create a category 
+    /// </summary>
+    /// <returns>
+    /// 200 OK
+    /// </returns>
 
     [HttpPost]
     public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryDto createCategoryDto)
@@ -41,7 +57,12 @@ public class CategoriesController : ControllerBase
         var newCategory = await _categoryService.CreateCategoryAsync(createCategoryDto);
         return CreatedAtAction(nameof(GetCategory), new { id = newCategory.CategoryId }, newCategory);
     }
-
+    /// <summary>
+    /// delete a category by its ID
+    /// </summary>
+    /// <returns>
+    /// 200 OK
+    /// </returns>
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCategory(int id)
     {
