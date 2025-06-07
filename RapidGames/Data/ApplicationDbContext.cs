@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using RapidGames.Models; // Add this using statement to access your models
+using RapidGames.Models; 
 
 namespace RapidGames.Data
 {

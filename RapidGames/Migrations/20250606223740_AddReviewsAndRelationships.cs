@@ -4,10 +4,8 @@
 
 namespace RapidGames.Migrations
 {
-    /// <inheritdoc />
     public partial class AddReviewsAndRelationships : Migration
     {
-        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
@@ -41,7 +39,7 @@ namespace RapidGames.Migrations
                 onDelete: ReferentialAction.Cascade);
         }
 
-        /// <inheritdoc />
+        
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
