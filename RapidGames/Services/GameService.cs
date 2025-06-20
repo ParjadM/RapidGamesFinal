@@ -59,7 +59,7 @@ namespace RapidGames.Services
 
         public async Task<GameDto> CreateGameAsync(CreateGameDto createGameDto)
         {
-            // Validate the input DTO
+            
             var gameEntity = new Game
             {
                 Title = createGameDto.Title,
@@ -124,6 +124,49 @@ namespace RapidGames.Services
             _context.Games.Remove(gameEntity);
             await _context.SaveChangesAsync();
             return true;
+        }
+        public async Task<GameDto?> AddCategoryToGameAsync(int gameId, int categoryId)
+        {
+            // add category from game bridge table service
+            var game = await _context.Games
+                                     .Include(g => g.CategoryGames)
+                                     .FirstOrDefaultAsync(g => g.GameId == gameId);
+
+            var categoryExists = await _context.Categories.AnyAsync(c => c.CategoryId == categoryId);
+
+            if (game == null || !categoryExists)
+            {
+                return null; 
+            }
+
+            var linkAlreadyExists = game.CategoryGames.Any(cg => cg.CategoryId == categoryId);
+            if (linkAlreadyExists)
+            {
+                return await GetGameByIdAsync(gameId);
+            }
+
+            var newLink = new CategoryGames { GameId = gameId, CategoryId = categoryId };
+            _context.CategoryGames.Add(newLink);
+            await _context.SaveChangesAsync();
+            return await GetGameByIdAsync(gameId);
+        }
+
+        public async Task<GameDto?> RemoveCategoryFromGameAsync(int gameId, int categoryId)
+        {
+            // remove category from game bridge table service
+            var linkToRemove = await _context.CategoryGames
+                                             .FirstOrDefaultAsync(cg => cg.GameId == gameId && cg.CategoryId == categoryId);
+
+            if (linkToRemove == null)
+            {
+                return null; 
+            }
+
+            _context.CategoryGames.Remove(linkToRemove);
+            await _context.SaveChangesAsync();
+
+            
+            return await GetGameByIdAsync(gameId);
         }
     }
 }

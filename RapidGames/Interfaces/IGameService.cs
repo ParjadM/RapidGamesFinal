@@ -12,5 +12,10 @@ namespace RapidGames.Interfaces
         Task<GameDto> CreateGameAsync(CreateGameDto createGameDto);
         Task<GameDto?> UpdateGameAsync(int id, UpdateGameDto updateGameDto);
         Task<bool> DeleteGameAsync(int id);
+
+
+        // bridge table
+        Task<GameDto?> AddCategoryToGameAsync(int gameId, int categoryId);
+        Task<GameDto?> RemoveCategoryFromGameAsync(int gameId, int categoryId);
     }
 }

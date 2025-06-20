@@ -20,7 +20,6 @@ namespace RapidGames.Services
 
         public async Task<IEnumerable<ReviewDto>> GetAllReviewsAsync()
         {
-            // Fetch all reviews and map them to ReviewDto, including game title
             return await _context.Reviews
                 .Include(r => r.Game) 
                 .Select(r => new ReviewDto
@@ -29,18 +28,33 @@ namespace RapidGames.Services
                     ReviewText = r.ReviewText,
                     Rating = r.Rating,
                     GameId = r.GameId,
-                    GameTitle = r.Game.Title
+                    GameTitle = r.Game != null ? r.Game.Title : "Unknown Game"
                 })
                 .ToListAsync();
         }
 
+        public async Task<ReviewDto?> GetReviewByIdAsync(int id)
+        {
+            return await _context.Reviews
+                .Where(r => r.ReviewId == id)
+                .Include(r => r.Game)
+                .Select(r => new ReviewDto
+                {
+                    ReviewId = r.ReviewId,
+                    ReviewText = r.ReviewText,
+                    Rating = r.Rating,
+                    GameId = r.GameId,
+                    GameTitle = r.Game != null ? r.Game.Title : "Unknown Game"
+                })
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<ReviewDto?> CreateReviewAsync(CreateReviewDto reviewDto)
         {
-            // Validate that the game exists before creating a review
             var gameExists = await _context.Games.AnyAsync(g => g.GameId == reviewDto.GameId);
             if (!gameExists)
             {
-                return null; 
+                return null;
             }
 
             var reviewEntity = new Review
@@ -53,16 +67,37 @@ namespace RapidGames.Services
             _context.Reviews.Add(reviewEntity);
             await _context.SaveChangesAsync();
 
-            var newReview = await _context.Reviews.Include(r => r.Game).FirstOrDefaultAsync(r => r.ReviewId == reviewEntity.ReviewId);
+            return await GetReviewByIdAsync(reviewEntity.ReviewId);
+        }
 
-            return new ReviewDto
+        public async Task<ReviewDto?> UpdateReviewAsync(int id, UpdateReviewDto reviewDto)
+        {
+            var reviewEntity = await _context.Reviews.FindAsync(id);
+
+            if (reviewEntity == null)
             {
-                ReviewId = newReview.ReviewId,
-                ReviewText = newReview.ReviewText,
-                Rating = newReview.Rating,
-                GameId = newReview.GameId,
-                GameTitle = newReview.Game.Title
-            };
+                return null; 
+            }
+
+            reviewEntity.ReviewText = reviewDto.ReviewText;
+            reviewEntity.Rating = reviewDto.Rating;
+
+            await _context.SaveChangesAsync();
+
+            return await GetReviewByIdAsync(id);
+        }
+
+        public async Task<bool> DeleteReviewAsync(int id)
+        {
+            var reviewEntity = await _context.Reviews.FindAsync(id);
+            if (reviewEntity == null)
+            {
+                return false; 
+            }
+
+            _context.Reviews.Remove(reviewEntity);
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

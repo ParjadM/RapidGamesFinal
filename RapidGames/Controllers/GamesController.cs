@@ -95,5 +95,37 @@ namespace RapidGames.Controllers
             }
             return NoContent();
         }
+        /// <summary>
+        /// add category to game bridge table
+        /// </summary>
+        /// <returns>
+        /// 200 OK
+        /// </returns>
+        [HttpPost("{gameId}/categories/{categoryId}")]
+        public async Task<IActionResult> AddCategoryToGame(int gameId, int categoryId)
+        {
+            var updatedGame = await _gameService.AddCategoryToGameAsync(gameId, categoryId);
+            if (updatedGame == null)
+            {
+                return NotFound(new { message = "Game or Category not found." });
+            }
+            return Ok(updatedGame);
+        }
+        /// <summary>
+        /// remove category to game bridge table
+        /// </summary>
+        /// <returns>
+        /// 200 OK
+        /// </returns>
+        [HttpDelete("{gameId}/categories/{categoryId}")]
+        public async Task<IActionResult> RemoveCategoryFromGame(int gameId, int categoryId)
+        {
+            var updatedGame = await _gameService.RemoveCategoryFromGameAsync(gameId, categoryId);
+            if (updatedGame == null)
+            {
+                return NotFound(new { message = "The specified game-category link does not exist." });
+            }
+            return Ok(updatedGame);
+        }
     }
 }
