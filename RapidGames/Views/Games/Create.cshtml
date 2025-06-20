@@ -1,0 +1,89 @@
+﻿@model RapidGames.Models.Game
+
+@{
+    ViewData["Title"] = "Add a New Game";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add a New Game</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            font-size: 1.5em;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+            .form-group label {
+                display: block;
+                margin-bottom: .5rem;
+                font-weight: bold;
+            }
+
+            .form-group input {
+                width: 100%;
+                max-width: 400px;
+                padding: .5rem;
+                font-size: 1em;
+                border: 1px solid #ccc;
+            }
+
+            .form-group .text-danger {
+                color: red;
+                font-size: 0.9em;
+            }
+
+        .actions a {
+            margin-top: 1rem;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+    <div>
+        <h1>Add a New Game</h1>
+        <hr />
+        <div>
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Developer" class="control-label"></label>
+                    <input asp-for="Developer" />
+                    <span asp-validation-for="Developer" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" />
+                </div>
+            </form>
+        </div>
+
+        <div class="actions">
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>
+
+</body>
+</html>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

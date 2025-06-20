@@ -1,0 +1,65 @@
+﻿@model RapidGames.Models.Game
+
+@{
+    ViewData["Title"] = "Game Details";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Details</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            font-size: 1.5em;
+        }
+
+        dl {
+            margin-top: 1rem;
+        }
+
+        dt {
+            font-weight: bold;
+        }
+
+        dd {
+            margin-left: 0;
+            margin-bottom: 1rem;
+        }
+
+        .actions a {
+            margin-right: 10px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div>
+        <h1>@Html.DisplayFor(model => model.Title)</h1>
+
+        <div>
+            <h4>Details</h4>
+            <hr />
+            <dl>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Developer)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Developer)
+                </dd>
+            </dl>
+        </div>
+        <div class="actions">
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>
+
+</body>
+</html>

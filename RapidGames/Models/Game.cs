@@ -17,7 +17,7 @@ namespace RapidGames.Models
         public DateTime ReleaseDate { get; set; }
 
         public string? ImgNumber { get; set; }
-        //A game can have many reviews (work on this)
+        //A game can have many reviews 
         public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
         
         // a category can be applied to multiple games

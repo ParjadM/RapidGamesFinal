@@ -1,0 +1,80 @@
+﻿@model IEnumerable<RapidGames.Models.Game>
+
+@{
+    ViewData["Title"] = "Game Library";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Library</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+
+        .game-item {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+            .game-item h2 {
+                margin: 0 0 5px 0;
+                font-size: 1.2em;
+            }
+
+            .game-item p {
+                margin: 0 0 10px 0;
+            }
+
+        .game-actions form {
+            display: inline;
+        }
+
+        .game-actions a, .game-actions button {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            text-decoration: underline;
+            color: blue;
+            font-size: 1em;
+            font-family: sans-serif;
+        }
+
+        .game-actions button {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <div>
+        <h1>Game Library</h1>
+
+        <p><a asp-action="Create">Add a New Game</a></p>
+
+        @foreach (var item in Model)
+        {
+            <div class="game-item">
+                <h2>@Html.DisplayFor(modelItem => item.Title)</h2>
+                <p>Developer: @Html.DisplayFor(modelItem => item.Developer)</p>
+                <div class="game-actions">
+                    <a asp-action="Edit" asp-route-id="@item.GameId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.GameId">Details</a> |
+                    <form asp-action="Delete" asp-route-id="@item.GameId" method="post">
+                        <button type="submit" onclick="return confirm('Are you sure you want to delete: @item.Title?');">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+
+</body>
+</html>
